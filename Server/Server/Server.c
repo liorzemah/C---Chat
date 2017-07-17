@@ -75,7 +75,7 @@ int main()
 			}
 		}
 
-		//wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
+		//wait for activity in readfds(fd_set list)
 		if (select(max_sd + 1, &readfds, NULL, NULL, NULL) == -1)
 		{
 			perror("Select");
@@ -134,7 +134,7 @@ int main()
 					printf("Message from %s in Port %d : %s\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port), buf);
 
 
-					char buff[256];
+					char buff[BUFFER_SIZE];
 					_itoa(ntohs(client.sin_port),buff,10);
 					strcat(buff, " : ");
 					strcat(buff, buf);
@@ -167,12 +167,13 @@ int main()
 
 int init(WSADATA* wsa)
 {
-	printf("Initialising Winsock \n");
+	printf("\n Initialising Winsock \n");
 	if (WSAStartup(MAKEWORD(2, 2), wsa) != 0)
 	{
-		printf("Failed. Error Code : %d \n", WSAGetLastError());
+		printf("Initialising Winsock error code: %d \n", WSAGetLastError());
 		return 0;
 	}
+
 	printf("Initialised. \n");
 	return 1;
 }
