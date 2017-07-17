@@ -1,0 +1,7 @@
+﻿  client.c
+d:\c work\client\client\client.c(22): warning C4047: 'function': 'SOCKET' differs in levels of indirection from 'void *'
+d:\c work\client\client\client.c(22): warning C4024: 'recv': different types for formal and actual parameter 1
+d:\c work\client\client\client.c(64): warning C4013: 'getch' undefined; assuming extern returning int
+d:\c work\client\client\client.c(71): warning C4022: 'CreateThread': pointer mismatch for actual parameter 4
+  Client.vcxproj -> D:\C work\Client\Debug\Client.exe
+  Client.vcxproj -> D:\C work\Client\Debug\Client.pdb (Partial PDB)

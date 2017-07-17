@@ -1,0 +1,5 @@
+﻿  Server.c
+d:\c work\server\server\server.c(48): warning C4013: 'getch' undefined; assuming extern returning int
+d:\c work\server\server\server.c(18): warning C4047: 'initializing': 'SOCKET' differs in levels of indirection from 'void *'
+  Server.vcxproj -> D:\C work\Server\Debug\Server.exe
+  Server.vcxproj -> D:\C work\Server\Debug\Server.pdb (Partial PDB)
