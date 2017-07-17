@@ -9,28 +9,8 @@
 
 // Functions:
 int init(WSADATA* wsa);
+DWORD WINAPI receives_from_server(void* s_server);
 
-// get the socket of the server
-DWORD WINAPI receives_from_server(void* s_server) { 
-	// Do stuff.  This will be the first function called on the new thread.
-	// When this function returns, the thread goes away.  See MSDN for more details.
-	while (1)
-	{
-		//Receive reply from the server
-		int recv_size;
-		char server_reply[SIZE];
-		if ((recv_size = recv(s_server, server_reply, SIZE, 0)) == SOCKET_ERROR)
-		{
-			puts("recv failed");
-			return 0;
-		}
-		//printf("%d", recv_size);
-		//puts("Reply received");
-
-		server_reply[recv_size] = '\0';
-		puts(server_reply);
-	}
-}
 
 
 
@@ -40,7 +20,7 @@ int main(int argc, char *argv[])
 	SOCKET s;
 	struct sockaddr_in server;
 	char *message;
-	
+	HANDLE thread;
 
 	// Initialising
 	if (init(&wsa) == 0) return 0;
@@ -64,11 +44,9 @@ int main(int argc, char *argv[])
 		getch();
 		return 1;
 	}
-
 	puts("Connected");
 
-	DWORD thread_ID;
-	HANDLE thread = CreateThread(NULL, 0, receives_from_server, s, 0, &thread_ID);
+	thread = CreateThread(NULL, 0, receives_from_server, s, 0, NULL);
 
 
 	while (1)
@@ -81,7 +59,7 @@ int main(int argc, char *argv[])
 		//printf("len: %d", strlen(message));
 		if (send(s, message, strlen(message), 0) < 0)
 		{
-			puts("Send failed");
+			puts("Send error");
 			return 1;
 		}
 		//puts("Data Send");
@@ -101,10 +79,10 @@ int main(int argc, char *argv[])
 
 int init(WSADATA* wsa)
 {
-	printf("\nInitialising Winsock... \n");
+	printf("\n Initialising Winsock \n");
 	if (WSAStartup(MAKEWORD(2, 2), wsa) != 0)
 	{
-		printf("Failed. Error Code : %d \n", WSAGetLastError());
+		printf("Initialising Winsock error code: %d \n", WSAGetLastError());
 		return 0;
 	}
 
@@ -112,3 +90,20 @@ int init(WSADATA* wsa)
 	return 1;
 }
 
+
+DWORD WINAPI receives_from_server(void* s_server) {
+
+	while (1)
+	{
+		int recv_size;
+		char server_reply[SIZE];
+		if ((recv_size = recv(s_server, server_reply, SIZE, 0)) == SOCKET_ERROR)
+		{
+			puts("recv failed");
+			return 0;
+		}
+
+		server_reply[recv_size] = '\0';
+		puts(server_reply);
+	}
+}
